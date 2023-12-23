@@ -3,11 +3,12 @@ import torch
 import torch.nn as nn
 from torch.optim import lr_scheduler
 from torch.utils.data import Dataset, DataLoader
-from ModelAndEyeDataset import StandardResNeXt,StandardResNest,EyeDataset
+from ModelAndEyeDataset import StandardResNeXt, StandardResNest, EyeDataset
 from utilstools.utils import ValidTransform, TrainTransform, calculate_weights
 
-# 检测 GPU 并选择设备
+# Detect GPU and select device
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 
 def train_model(model, train_loader, valid_loader, criterion, optimizer, scheduler, num_epochs=25):
     best_acc = 0.0
@@ -46,6 +47,7 @@ def train_model(model, train_loader, valid_loader, criterion, optimizer, schedul
 
         scheduler.step()
 
+
 def validate_model(model, valid_loader, criterion):
     model.eval()
     running_loss = 0.0
@@ -66,12 +68,13 @@ def validate_model(model, valid_loader, criterion):
     total_acc = running_corrects.double() / len(valid_loader.dataset)
     return total_loss, total_acc
 
-def main(TRAIN_DATA_PATH, VALID_DATA_PATH,weight_path,model,num_epochs=200,lr=0.001):
+
+def main(TRAIN_DATA_PATH, VALID_DATA_PATH, weight_path, model, num_epochs=200, lr=0.001):
     train_dataset = EyeDataset(TRAIN_DATA_PATH, transform=TrainTransform)
     train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True, num_workers=8, prefetch_factor=2)
     valid_dataset = EyeDataset(VALID_DATA_PATH, transform=ValidTransform)
     valid_loader = DataLoader(valid_dataset, batch_size=50, num_workers=4, prefetch_factor=2)
-    model=model
+    model = model
 
     if torch.cuda.device_count() > 1:
         model = nn.DataParallel(model)
@@ -83,7 +86,7 @@ def main(TRAIN_DATA_PATH, VALID_DATA_PATH,weight_path,model,num_epochs=200,lr=0.
     if weight_path and os.path.isfile(weight_path):
         model.load_state_dict(torch.load(weight_path))
 
-    train_model(model, train_loader, valid_loader, criterion, optimizer, scheduler,num_epochs=num_epochs)
+    train_model(model, train_loader, valid_loader, criterion, optimizer, scheduler, num_epochs=num_epochs)
 
 
 if __name__ == '__main__':
@@ -94,13 +97,14 @@ if __name__ == '__main__':
     ##Select StandardResNeXt model type
 
     model = StandardResNest(num_classes=2).to(device)
-    modleName=model.__class__.__name__
 
     ##Select StandardResNeXt model type
-    #model = StandardResNest(num_classes=2).to(device)
-    #训练轮数
-    num_epochs=200
-    #学习参数
-    lr=0.001
 
-    main(TRAIN_DATA_PATH=TRAIN_DATA_PATH, VALID_DATA_PATH=VALID_DATA_PATH, weight_path=weight_path,model=model,num_epochs=num_epochs,lr=lr)
+    modleName = model.__class__.__name__
+    # training epoch
+    num_epochs = 200
+    # Learning rate parameter
+    lr = 0.001
+
+    main(TRAIN_DATA_PATH=TRAIN_DATA_PATH, VALID_DATA_PATH=VALID_DATA_PATH, weight_path=weight_path, model=model,
+         num_epochs=num_epochs, lr=lr)
