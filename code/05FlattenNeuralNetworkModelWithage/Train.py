@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 from torch.optim import lr_scheduler
 from torch.utils.data import  DataLoader
-from ModelAndEyeDataset import FltattenResNeXtWithAge,EyeDataset
+from ModelAndEyeDataset import FltattenResNeXtWithAge,EyeDataset,FlattenResNeXtWithAge2
 from utilstools.utils import ValidTransform, TrainTransform, calculate_weights
 
 # Detect GPU and select device
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     # global parameters
     TRAIN_DATA_PATH = r'H:\eye-cmit\train'  # training data path
     VALID_DATA_PATH = r'H:\eye-cmit\valid'  # valid  data path
-    weight_path = r'FltattenResNeXtWithAgemodel_state_dict_0.8200.pth'
+    weight_path = r'FltattenResNeXtWithAgemodel_state_dict_0.8300.pth'
     age_path = './age.xls'
 
     model = FltattenResNeXtWithAge().to(device)

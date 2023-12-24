@@ -26,9 +26,12 @@ def test(test_data_loader):
     score_list = []  # Store predicted scores
     label_list = []  # Store real labels
     for batch in tqdm(test_data_loader):
-        inputs, labels = batch  # Modify this to match the return of DataLoader
-        inputs, labels = inputs.to(device), labels.to(device)
-        output = model(inputs)
+        left_eye, right_eye, labels, age  = batch  # Modify this to match the return of DataLoader
+        ineft_eye = left_eye.to(device)
+        right_eye = right_eye.to(device)
+        labels = labels.to(device)
+        age = age.to(device)
+        output= model(left_eye, right_eye, age)
         pre = torch.max(F.softmax(output, dim=1), dim=1)[1]
         pred += list(pre.cpu().numpy())
         trued += list(labels.cpu().numpy())
@@ -36,6 +39,9 @@ def test(test_data_loader):
         score_list.extend(score_tmp.detach().cpu().numpy())
         label_list.extend(labels.cpu().numpy())
     return pred, trued, score_list, label_list
+
+
+    t
 
 
 def test_model(model, test_loader):
@@ -91,7 +97,7 @@ def run_tests(model, title, image_path, classes1, classes2, save_path='./data', 
 
         # Prepare test data
         test_dataset = EyeDataset(root_dir=os.path.join(image_path, name), transform=ValidTransform,
-                                  age_csv_path=age_path)
+                                  age_path=age_path)
         test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
         pred, trued, score_list, label_list = test(test_data_loader=test_loader)
 
@@ -141,8 +147,8 @@ def run_tests(model, title, image_path, classes1, classes2, save_path='./data', 
 if __name__ == '__main__':
     # Setup and initialize variables
     save_path = r'./data'
-    weight_path = r'C:\Users\Administrator\PycharmProjects\pythonProject7\1个Resnet2张图像\resnext_age\model_state_dict_0.82001.pth'
-    image_path = 'H:\eye-cmit2'  # Replace with actual path
+    weight_path = r'FltattenResNeXtWithAgemodel_state_dict_0.8300.pth'
+    image_path = 'H:\eye-cmit'  # Replace with actual path
     classes1 = ["0", "1"]
     classes2 = ["CMIT Normal", "CIMIT Thickened"]
     age_path = './age.xls'
