@@ -38,20 +38,6 @@ The following are the deep learning models designed in this project:
    pip install -r requirements.txt
    ```
 
-## Training the Models
 
-Each model uses a different `Train.py` method for training. Run the following command to train a specific model:
 
-```
-python Train.py --model
-```
-
-## Testing the Models
-
-Use the `test.py` script to test the performance of the models. Run the following command for testing:
-
-```
-python test.py --model
-```
-
-## 
+![image-20231230120003713](F:\360MoveData\Users\Administrator\Documents\GitHub\cimt-predict\cimt-predict\image\image-20231230120003713.png)
