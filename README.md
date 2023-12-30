@@ -40,4 +40,4 @@ The following are the deep learning models designed in this project:
 
 
 
-![image-20231230120003713](F:\360MoveData\Users\Administrator\Documents\GitHub\cimt-predict\cimt-predict\image\image-20231230120003713.png)
+![image-20231230120003713](https://github.com/gongajuan/cimt-predict/blob/main/image/image-20231230120003713.png)
